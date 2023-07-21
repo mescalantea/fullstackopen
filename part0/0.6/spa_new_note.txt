@@ -1,0 +1,35 @@
+note over user:
+user fills note input field with 
+the text of the new note
+end note
+
+user->browser: click on submit button
+
+note over browser:
+Browser executes the event handler 
+for form submit and prevents default 
+behavior
+end note
+
+note over browser:
+A new note with the content of 
+the input and the current date 
+is pushed to list
+
+end note
+
+note over browser:
+Input is cleared
+end note
+
+note over browser:
+Notes in UI are redrawn
+end note
+
+browser->server: AJAX POST /exampleapp/new_note_spa passing new note as JSON
+
+note over server:
+server saves the note
+end note
+
+server-->browser: {"message":"note created"}

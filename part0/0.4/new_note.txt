@@ -1,0 +1,36 @@
+note over user:
+user fills note input field with 
+the text of the new note
+end note
+
+user->browser: click on submit button
+browser->server: HTTP POST /exampleapp/new_note passing form data
+
+note over server:
+server push a new note to the list with the
+content received from the request and the 
+current date
+end note
+
+server-->browser: Responds with a redirection to notes page
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML Content
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+
+note over browser:
+browser starts executing js-code
+that requests JSON data from server 
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: JSON data
+
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note
