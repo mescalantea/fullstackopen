@@ -6,6 +6,7 @@ import './index.css';
 
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
 
   const handleClick = () => {
     let index = 0
@@ -16,9 +17,13 @@ const App = ({ anecdotes }) => {
     setSelected(index)
   }
 
+  const handleVote = () => setPoints(points.map((p, i) => i === selected ? p + 1 : p))
+
   return (
     <div>
       <h1>{anecdotes[selected]}</h1>
+      <p>has {points[selected] } votes</p>
+      <button onClick={handleVote}>Vote</button>
       <button onClick={handleClick}>Next anecdote</button>
     </div>
   )
