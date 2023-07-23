@@ -12,26 +12,41 @@ const Button = ({ text, handleClick }) => {
 }
 
 const StaticLine = ({ text, value }) => {
-  return (<p>{text} {value}</p>)
+  return (<tr><th>{text}</th><td>{value}</td></tr>)
 }
 
 const Statics = ({ stats }) => {
   if (!(stats.good > 0 || stats.neutral > 0 || stats.bad > 0)) {
-    return (<p>No feedback given</p>)
+    return (
+      <>
+        <h2>Statics</h2>
+        <table>
+          <tbody>
+            <tr>
+              <th>No feedback given</th>
+            </tr>
+          </tbody>
+        </table>
+      </>)
   }
   const all = stats.good + stats.neutral + stats.bad
   const positive = all > 0 ? stats.good / all * 100 : 0
   const averageScore = all > 0 ? (stats.good * stats.values.good + stats.neutral * stats.values.neutral + stats.bad * stats.values.bad) / all : 0
 
   return (
-    <div>
-      <StaticLine text={"Good:"} value={stats.good} />
-      <StaticLine text={"Neutral:"} value={stats.neutral} />
-      <StaticLine text={"Bad:"} value={stats.bad} />
-      <StaticLine text={"All:"} value={all} />
-      <StaticLine text={"Average:"} value={averageScore} />
-      <StaticLine text={"Positive (%):"} value={positive.toFixed(2)} />
-    </div>
+    <>
+      <h2>Statics</h2>
+      <table>
+        <tbody>
+          <StaticLine text={"😍 Good:"} value={stats.good} />
+          <StaticLine text={"😐 Neutral:"} value={stats.neutral} />
+          <StaticLine text={"😠 Bad:"} value={stats.bad} />
+          <StaticLine text={"All:"} value={all} />
+          <StaticLine text={"Average:"} value={averageScore} />
+          <StaticLine text={"Positive (%):"} value={positive.toFixed(2)} />
+        </tbody>
+      </table>
+    </>
   )
 }
 
