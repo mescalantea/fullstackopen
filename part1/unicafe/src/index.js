@@ -12,18 +12,34 @@ const Button = ({ text, handleClick }) => {
 }
 
 const Statics = ({ stats }) => {
+  const all = stats.good + stats.neutral + stats.bad
+  const positive = all > 0 ? stats.good / all * 100 : 0
+  const averageScore = all > 0 ? (stats.good * stats.values.good + stats.neutral * stats.values.neutral + stats.bad * stats.values.bad) / all : 0
+
   return (
     <div>
       <p>Good: {stats.good}</p>
       <p>Neutral: {stats.neutral}</p>
       <p>Bad: {stats.bad}</p>
+      <p>All: {all}</p>
+      <p>Average: {averageScore}</p>
+      <p>Positive: {positive.toFixed(2)}%</p>
     </div>
   )
 }
 
 const App = () => {
 
-  const [stats, setStats] = useState({good: 0, neutral: 0, bad: 0})
+  const [stats, setStats] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+    values: {
+      good: 1,
+      neutral: 0,
+      bad: -1
+    }
+  })
 
   return (
     <>
