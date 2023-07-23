@@ -11,7 +11,7 @@ const App = ({ anecdotes }) => {
     let index = 0
     do {
       // avoid repetition
-      index = Math.round(Math.random() * anecdotes.length - 1)
+      index = Math.round(Math.random() * (anecdotes.length - 1))
     } while (index === selected)
     setSelected(index)
   }
