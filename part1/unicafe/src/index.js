@@ -11,30 +11,36 @@ const Button = ({ text, handleClick }) => {
   )
 }
 
-const Statics = ({ good, neutral, bad }) => {
+const Statics = ({ stats }) => {
   return (
     <div>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
+      <p>Good: {stats.good}</p>
+      <p>Neutral: {stats.neutral}</p>
+      <p>Bad: {stats.bad}</p>
     </div>
   )
 }
 
 const App = () => {
 
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-
+  const [stats, setStats] = useState({good: 0, neutral: 0, bad: 0})
 
   return (
     <>
       <h1>Give Feedback</h1>
-      <Button text="😍 Good" handleClick={() => setGood(good + 1)} />
-      <Button text="😐 Neutral" handleClick={() => setNeutral(neutral + 1)} />
-      <Button text="😠 Bad" handleClick={() => setBad(bad + 1)} />
-      <Statics good={good} neutral={neutral} bad={bad} />
+      <Button text="😍 Good" handleClick={() => setStats({
+        ...stats,
+        good: stats.good + 1
+      })} />
+      <Button text="😐 Neutral" handleClick={() => setStats({
+        ...stats,
+        neutral: stats.neutral + 1
+      })} />
+      <Button text="😠 Bad" handleClick={() => setStats({
+        ...stats,
+        bad: stats.bad + 1
+      })} />
+      <Statics stats={stats} />
     </>
   )
 }
