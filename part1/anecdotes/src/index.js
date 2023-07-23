@@ -7,6 +7,7 @@ import './index.css';
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
+  const [mostVoted, setMostVoted] = useState(0)
 
   const handleClick = () => {
     let index = 0
@@ -17,14 +18,30 @@ const App = ({ anecdotes }) => {
     setSelected(index)
   }
 
-  const handleVote = () => setPoints(points.map((p, i) => i === selected ? p + 1 : p))
+  const handleVote = () => {
+    const newPoints = points.map((p, i) => i === selected ? p + 1 : p)
+    // update points
+    setPoints(newPoints)
+    // update most voted
+    let index = 0
+    let max = 0
+    for (let i = 0; i < newPoints.length; i++) {
+      if(newPoints[i] > max){
+        max = newPoints[i]
+        index = i
+      }
+    }
+    setMostVoted(index)
+  }
 
   return (
     <div>
       <h1>{anecdotes[selected]}</h1>
-      <p>has {points[selected] } votes</p>
+      <p>has {points[selected]} votes</p>
       <button onClick={handleVote}>Vote</button>
       <button onClick={handleClick}>Next anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[mostVoted]}</p>
     </div>
   )
 }
