@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-const mock = [
-    { name: 'Arto Hellas', number: '040-123456', visible: true },
-    { name: 'Ada Lovelace', number: '39-44-5323523', visible: true },
-    { name: 'Dan Abramov', number: '12-43-234345', visible: true },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', visible: true }
-]
+import { personsMock } from '../mocks/persons'
+import Persons from './Persons'
+import PersonForm from './PersonForm'
+import Filter from './Filter'
 
 const App = () => {
-    const [persons, setPersons] = useState(mock)
+    const [persons, setPersons] = useState(personsMock)
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [search, setSearch] = useState('')
@@ -66,25 +64,17 @@ const App = () => {
 
     return (
         <div>
-            <h2>Phonebook ☎️</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Name</label>
-                    <input value={newName} onChange={handleNameChange} />
-                </div>
-                <div>
-                    <label>Number</label>
-                    <input value={newNumber} onChange={handleNumberChange} />
-                </div>
-                <div>
-                    <button type="submit">Add</button>
-                </div>
-            </form>
+            <h2>Phonebook <span role='img' aria-label='phone'>☎️</span></h2>
+            <PersonForm
+                handleSubmit={handleSubmit}
+                newName={newName}
+                handleNameChange={handleNameChange}
+                newNumber={newNumber}
+                handleNumberChange={handleNumberChange}
+            />
             <h2>Numbers</h2>
-            <input value={search} onChange={handleSearch} placeholder='🔎 Arto Hellas' className='search' />
-            <table><tbody>
-                {persons.filter(({ visible }) => visible).map(({ name, number }) => (<tr key={name}><th>{name}</th><td>{number}</td></tr>))}
-            </tbody></table>
+            <Filter search={search} handleSearch={handleSearch} />
+            <Persons persons={persons} />
 
         </div>
     )
