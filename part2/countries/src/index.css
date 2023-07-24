@@ -1,0 +1,21 @@
+body{
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+.flag{
+    height: 64px;
+    margin-bottom: 1rem;
+}
+article>header{
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+article>footer{
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+article>footer ul{
+    margin-bottom: 0;
+}
