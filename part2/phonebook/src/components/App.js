@@ -1,14 +1,33 @@
-import React, { useState } from 'react'
-import { personsMock } from '../mocks/persons'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
 
 const App = () => {
-    const [persons, setPersons] = useState(personsMock)
+    const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [search, setSearch] = useState('')
+
+    const isVisible = (name, search) => name.toLowerCase().includes(search.toLowerCase())
+
+    // fetch persons from REST API
+    useEffect(() => {
+        axios
+            .get('http://localhost:3001/persons')
+            .then((response) => {
+                // append visible attribute.
+                setPersons(
+                    response.data.map(p => {
+                        return { ...p, visible: isVisible(p.name, search) }
+                    })
+                )
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }, [])
 
     const handleNameChange = (e) => {
         if (e.target.value === newName) {
@@ -23,7 +42,7 @@ const App = () => {
         setNewNumber(e.target.value)
     }
 
-    const isVisible = (name, search) => name.toLowerCase().includes(search.toLowerCase())
+   
 
     const handleSearch = (e) => {
         if (e.target.value === search) {
@@ -54,6 +73,7 @@ const App = () => {
         }
 
         setPersons(persons.concat({
+            id: persons.length + 1,
             name: newName,
             number: newNumber,
             visible: isVisible(newName, search)

@@ -7,7 +7,7 @@ const Persons = ({ persons }) => {
             <tbody>
                 {
                     persons.filter(({ visible }) => visible)
-                        .map((person) => (<Person key={person.name} person={person} />) )
+                        .map((person) => (<Person key={person.id} person={person} />) )
                 }
             </tbody>
         </table>
