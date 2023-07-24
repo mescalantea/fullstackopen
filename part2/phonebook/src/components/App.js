@@ -18,6 +18,14 @@ const App = () => {
         if (!newName) {
             return
         }
+
+        // check if person exists.
+        if (persons.filter(p => p.name === newName).length > 0) {
+            alert(`${newName} is already added to phonebook`)
+            return
+        }
+
+
         setPersons(persons.concat({
             name: newName
         }))
