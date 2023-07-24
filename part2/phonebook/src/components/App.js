@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 
 const App = () => {
     const [persons, setPersons] = useState([
-        { name: 'Arto Hellas' }
+        { name: 'Arto Hellas', number: '040-1234567' }
     ])
     const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
 
     const handleNameChange = (e) => {
         if (e.target.value === newName) {
@@ -12,10 +13,17 @@ const App = () => {
         }
         setNewName(e.target.value)
     }
+    const handleNumberChange = (e) => {
+        if (e.target.value === newNumber) {
+            return
+        }
+        setNewNumber(e.target.value)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!newName) {
+        if (!newName || !newNumber) {
+            alert('Please, fill the form before submit')
             return
         }
 
@@ -25,27 +33,35 @@ const App = () => {
             return
         }
 
-
         setPersons(persons.concat({
-            name: newName
+            name: newName,
+            number: newNumber
         }))
         setNewName('')
+        setNewNumber('')
     }
 
     return (
         <div>
-            <h2>Phonebook</h2>
+            <h2>Phonebook ☎️</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Name</label>
                     <input value={newName} onChange={handleNameChange} />
                 </div>
                 <div>
-                    <button type="submit">add</button>
+                    <label>Number</label>
+                    <input value={newNumber} onChange={handleNumberChange} />
+                </div>
+                <div>
+                    <button type="submit">Add</button>
                 </div>
             </form>
             <h2>Numbers</h2>
-            {persons.map(({ name }) => (<p key={name}>{name}</p>))}
+            <table><tbody>
+            {persons.map(({ name, number }) => (<tr key={name}><th>{name}</th><td>{number}</td></tr>))}
+                </tbody></table>
+           
         </div>
     )
 }
