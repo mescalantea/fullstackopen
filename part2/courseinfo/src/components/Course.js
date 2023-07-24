@@ -1,5 +1,6 @@
 import Header from './Header'
 import Part from './Part'
+import Total from './Total'
 
 const Course = ({ course }) => {
     return (
@@ -11,6 +12,7 @@ const Course = ({ course }) => {
                 ))
                 }
             </div>
+            <Total parts={course.parts} />
         </div>
     )
 }
