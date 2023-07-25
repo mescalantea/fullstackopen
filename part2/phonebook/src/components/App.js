@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
-import { getAll, isVisible, add, remove } from '../services/persons'
+import { getAll, isVisible, add, remove, update } from '../services/persons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -62,31 +62,46 @@ const App = () => {
             return
         }
 
-        // check if person exists.
-        if (persons.filter(p => p.name === newName).length > 0) {
-            alert(`${newName} is already added to phonebook`)
-            return
-        }
-
-        const newPerson = {
-            id: persons.length + 1,
-            name: newName,
-            number: newNumber,
-            visible: isVisible(newName, search)
-        }
-
+        let person = persons.find(p => p.name === newName)
         setLoading(true)
-        add(newPerson)
-            .then(data => {
-                setPersons(persons.concat(data))
-                setNewName('')
-                setNewNumber('')
-            })
-            .catch(e => {
-                console.error(e);
-                alert(e)
-            })
-            .finally(() => setLoading(false))
+
+        const handleError = e => {
+            console.error(e);
+            alert(e)
+        }
+        const handleDone = () => setLoading(false)
+
+        // check if person exists.
+        if (person) {
+            if (!window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+                setLoading(false)
+                return
+            }
+            person = { ...person, number: newNumber }
+            update(person)
+                .then(data => {
+                    setPersons(persons.map(p => p.id === data.id ? data : p))
+                    setNewName('')
+                    setNewNumber('')
+                })
+                .catch(handleError)
+                .finally(handleDone)
+        } else {
+            person = {
+                id: persons.length + 1,
+                name: newName,
+                number: newNumber,
+                visible: isVisible(newName, search)
+            }
+            add(person)
+                .then(data => {
+                    setPersons(persons.concat(data))
+                    setNewName('')
+                    setNewNumber('')
+                })
+                .catch(handleError)
+                .finally(handleDone)
+        }
     }
 
     const handleDelete = id => {
