@@ -22,26 +22,8 @@
     },
     {
       "id": 5,
-      "name": "yo",
-      "number": "123",
-      "visible": true
-    },
-    {
-      "id": 6,
-      "name": "aaa",
-      "number": "1234",
-      "visible": true
-    },
-    {
-      "id": 7,
-      "name": "prueba",
-      "number": "456",
-      "visible": true
-    },
-    {
-      "id": 8,
-      "name": "otro",
-      "number": "789",
+      "name": "uno",
+      "number": "123456",
       "visible": true
     }
   ]

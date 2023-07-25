@@ -14,5 +14,9 @@ const add = async newPerson => {
         .then(response => response.data)
 }
 
+const remove = id => {
+   return axios.delete(`${process.env.REACT_APP_API_URL}/${id}`)
+}
 
-export { getAll, isVisible, add }
+
+export { getAll, isVisible, add, remove }

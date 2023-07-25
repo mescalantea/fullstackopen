@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
-import { getAll, isVisible, add } from '../services/persons'
+import { getAll, isVisible, add, remove } from '../services/persons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -89,6 +89,19 @@ const App = () => {
             .finally(() => setLoading(false))
     }
 
+    const handleDelete = id => {
+        setLoading(true)
+        remove(id)
+            .then(() => {
+                setPersons(persons.filter(p => p.id !== id))
+            })
+            .catch(e => {
+                console.error(e);
+                alert(`Error deleting person with ID: ${id}`)
+            })
+            .finally(() => setLoading(false))
+    }
+
     return (
         <div>
             <h2>Phonebook <span role='img' aria-label='phone'>☎️</span></h2>
@@ -102,7 +115,7 @@ const App = () => {
             />
             <h2>Numbers</h2>
             <Filter search={search} handleSearch={handleSearch} />
-            <Persons persons={persons} />
+            <Persons persons={persons} handleDelete={handleDelete} />
 
         </div>
     )
