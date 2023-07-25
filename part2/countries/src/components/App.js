@@ -3,31 +3,54 @@ import axios from 'axios'
 import Countries from './Countries'
 import SearchCountries from './SearchCountries'
 import Country from './Country'
+import Weather from './Weather'
 
 function App() {
-
-
-  const base = 'https://restcountries.com/v3.1'
-  // const base = 'http://localhost:3001'
-
   const [countries, setCountries] = useState([])
   const [country, setCountry] = useState(null)
   const [search, setSearch] = useState('')
+  const [weather, setWeather] = useState(null)
+
+  useEffect(() => {
+    if (!country || !country.capital.length) {
+      // skip api call if city is not defined.
+      setWeather(null)
+      return
+    }
+
+    axios
+      .get(`${process.env.REACT_APP_WEATHER_API_URL}?access_key=${process.env.REACT_APP_WEATHER_API_KEY}&query=${country.capital[0]}&units=m`)
+      .then(response => setWeather(response.data))
+      .catch(e => console.error(e))
+  }, [country])
+
 
   const handleSearch = (e) => {
+    setCountry(null)
     setSearch(e.target.value)
   }
+  const handleClickOnCountry = (country) => {
+    setCountry(country)
+  }
+
   const handleGoBack = () => {
     setCountry(null)
+    if (countries.length === 1) {
+      setSearch('')
+    }
   }
+
   // fetch countries from API.
   useEffect(() => {
     axios
-      .get(`${base}/all`)
-      .then(response =>
-        setCountries(
-          response.data.filter(country => country.name.common.toLowerCase().includes(search.toLowerCase()))
-        )
+      .get(process.env.REACT_APP_COUNTRIES_API_URL)
+      .then(response => {
+        const filteredCountries = response.data.filter(country => country.name.common.toLowerCase().includes(search.toLowerCase()))
+        setCountries(filteredCountries)
+        if (filteredCountries.length === 1) {
+          setCountry(filteredCountries[0])
+        }
+      }
       )
       .catch(e => console.error(e))
   }, [search])
@@ -35,8 +58,9 @@ function App() {
   return (
     <>
       <SearchCountries search={search} handleSearch={handleSearch} />
-      <Countries countries={countries} country={country} setCountry={setCountry} />
-      <Country country={country} setCountry={setCountry} />
+      <Countries countries={countries} country={country} handleClickOnCountry={handleClickOnCountry} />
+      <Country country={country} handleGoBack={handleGoBack} />
+      <Weather weather={weather} />
     </>
   );
 }

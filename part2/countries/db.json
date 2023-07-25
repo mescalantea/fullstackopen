@@ -53040,5 +53040,46 @@
                 ]
             }
         }
-    ]
+    ],
+    "current": {
+        "request": {
+            "type": "City",
+            "query": "Madrid, Spain",
+            "language": "en",
+            "unit": "m"
+        },
+        "location": {
+            "name": "Madrid",
+            "country": "Spain",
+            "region": "Madrid",
+            "lat": "40.400",
+            "lon": "-3.683",
+            "timezone_id": "Europe\/Madrid",
+            "localtime": "2023-07-25 11:42",
+            "localtime_epoch": 1690285320,
+            "utc_offset": "2.0"
+        },
+        "current": {
+            "observation_time": "09:42 AM",
+            "temperature": 24,
+            "weather_code": 113,
+            "weather_icons": [
+                "https:\/\/cdn.worldweatheronline.com\/images\/wsymbols01_png_64\/wsymbol_0001_sunny.png"
+            ],
+            "weather_descriptions": [
+                "Sunny"
+            ],
+            "wind_speed": 4,
+            "wind_degree": 263,
+            "wind_dir": "W",
+            "pressure": 1018,
+            "precip": 0,
+            "humidity": 36,
+            "cloudcover": 0,
+            "feelslike": 24,
+            "uv_index": 7,
+            "visibility": 10,
+            "is_day": "yes"
+        }
+    }
 }

@@ -1,10 +1,10 @@
-export default function Country({ country, setCountry }) {
+export default function Country({ country, handleGoBack }) {
     if (!country) {
         return
     }
     return (
         <article>
-            <header>{country.name.common}<button onClick={() => setCountry(null)}>Go Back</button></header>
+            <header>{country.name.common}<button onClick={handleGoBack}>Go Back</button></header>
             <img src={country.flags.png} alt={country.name.common} className="flag" />
             <p>Capital: {country.capital.join()}</p>
             <p>Population: {country.population}</p>

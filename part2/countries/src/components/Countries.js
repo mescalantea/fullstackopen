@@ -1,10 +1,6 @@
-export default function Countries({ countries, country, setCountry }) {
-    if (country || !countries.length) {
+export default function Countries({ countries, country, handleClickOnCountry }) {
+    if (country || !countries.length || countries.length === 1) {
         // nothing
-        return
-    }
-    if (countries.length === 1) {
-        setCountry(countries[0])
         return
     }
     if (countries.length > 10) {
@@ -17,9 +13,7 @@ export default function Countries({ countries, country, setCountry }) {
                 return (
                     <div className="country-list__item" key={name.common}>
                         <p><span className="country-list__flag">{flag}</span>{name.common}</p>
-                        <button onClick={() => {
-                            setCountry(country)
-                        }}>Show</button>
+                        <button onClick={() => handleClickOnCountry(country)}>Show</button>
                     </div>
                 )
             })
