@@ -17,21 +17,6 @@ const App = () => {
         visible: false
     })
 
-    // fetch persons from REST API
-    useEffect(() => {
-        getAll()
-            .then(data => {
-                // append visible attribute.
-                setPersons(
-                    data.map(p => {
-                        return { ...p, visible: isVisible(p.name, search) }
-                    })
-                )
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-    }, [])
 
     const notify = msg => {
         setMessage({
@@ -48,6 +33,39 @@ const App = () => {
             }, 3000)
         }
     }
+
+    const handleError = e => {
+        console.error(e);
+        let msg = 'Something went wrong'
+        // alert(e)
+        switch (e.response.status) {
+            case 404:
+                msg = 'Sorry, not found!'
+                break;
+        }
+        notify({
+            text: msg,
+            type: 'error'
+        })
+    }
+
+    const handleDone = () => setLoading(false)
+
+    // fetch persons from REST API
+    useEffect(() => {
+        getAll()
+            .then(data => {
+                // append visible attribute.
+                setPersons(
+                    data.map(p => {
+                        return { ...p, visible: isVisible(p.name, search) }
+                    })
+                )
+            })
+            .catch(handleError)
+    }, [])
+
+
 
     const handleNameChange = (e) => {
         if (e.target.value === newName) {
@@ -87,11 +105,7 @@ const App = () => {
         let person = persons.find(p => p.name === newName)
         setLoading(true)
 
-        const handleError = e => {
-            console.error(e);
-            alert(e)
-        }
-        const handleDone = () => setLoading(false)
+
 
         // check if person exists.
         if (person) {
@@ -139,13 +153,15 @@ const App = () => {
         setLoading(true)
         remove(id)
             .then(() => {
+                const p = persons.find(p => p.id === id)
                 setPersons(persons.filter(p => p.id !== id))
+                notify({
+                    text: `Deleted ${p.name}`,
+                    type: 'success'
+                })
             })
-            .catch(e => {
-                console.error(e);
-                alert(`Error deleting person with ID: ${id}`)
-            })
-            .finally(() => setLoading(false))
+            .catch(handleError)
+            .finally(handleDone)
     }
 
     return (
