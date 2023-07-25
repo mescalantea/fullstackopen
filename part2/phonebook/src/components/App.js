@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
+import { getAll, isVisible, add } from '../services/persons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -11,16 +11,13 @@ const App = () => {
     const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const isVisible = (name, search) => name.toLowerCase().includes(search.toLowerCase())
-
     // fetch persons from REST API
     useEffect(() => {
-        axios
-            .get(process.env.REACT_APP_API_URL)
-            .then((response) => {
+        getAll()
+            .then(data => {
                 // append visible attribute.
                 setPersons(
-                    response.data.map(p => {
+                    data.map(p => {
                         return { ...p, visible: isVisible(p.name, search) }
                     })
                 )
@@ -79,14 +76,11 @@ const App = () => {
         }
 
         setLoading(true)
-        axios
-            .post(process.env.REACT_APP_API_URL, newPerson)
-            .then(response => {
-
-                setPersons(persons.concat(response.data))
+        add(newPerson)
+            .then(data => {
+                setPersons(persons.concat(data))
                 setNewName('')
                 setNewNumber('')
-
             })
             .catch(e => {
                 console.error(e);
