@@ -8,7 +8,7 @@ const getAll = async () => {
         .then((response) => response.data)
 }
 
-const add = async newPerson => {
+const add = newPerson => {
     return axios
         .post(process.env.REACT_APP_API_URL, newPerson)
         .then(response => response.data)

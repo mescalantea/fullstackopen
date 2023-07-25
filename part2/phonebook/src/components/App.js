@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
+import Notification from './Notification'
 import { getAll, isVisible, add, remove, update } from '../services/persons'
 
 const App = () => {
@@ -10,6 +11,11 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState({
+        text: null,
+        type: 'success',
+        visible: false
+    })
 
     // fetch persons from REST API
     useEffect(() => {
@@ -26,6 +32,22 @@ const App = () => {
                 console.error(error)
             })
     }, [])
+
+    const notify = msg => {
+        setMessage({
+            ...msg,
+            visible: true
+        })
+        if (msg) {
+            setTimeout(() => {
+                // hide notification
+                setMessage({
+                    ...message,
+                    visible: false
+                })
+            }, 3000)
+        }
+    }
 
     const handleNameChange = (e) => {
         if (e.target.value === newName) {
@@ -81,6 +103,11 @@ const App = () => {
             update(person)
                 .then(data => {
                     setPersons(persons.map(p => p.id === data.id ? data : p))
+                    notify({
+                        text: `Updated ${person.name}`,
+                        type: 'success'
+                    })
+
                     setNewName('')
                     setNewNumber('')
                 })
@@ -88,7 +115,7 @@ const App = () => {
                 .finally(handleDone)
         } else {
             person = {
-                id: persons.length + 1,
+                id: persons.reduce((max, person) => person.id > max ? person.id : max, 0) + 1,
                 name: newName,
                 number: newNumber,
                 visible: isVisible(newName, search)
@@ -96,6 +123,10 @@ const App = () => {
             add(person)
                 .then(data => {
                     setPersons(persons.concat(data))
+                    notify({
+                        text: `Added ${person.name}`,
+                        type: 'success'
+                    })
                     setNewName('')
                     setNewNumber('')
                 })
@@ -131,6 +162,7 @@ const App = () => {
             <h2>Numbers</h2>
             <Filter search={search} handleSearch={handleSearch} />
             <Persons persons={persons} handleDelete={handleDelete} />
+            <Notification message={message} />
 
         </div>
     )
