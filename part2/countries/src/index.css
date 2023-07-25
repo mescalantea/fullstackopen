@@ -10,6 +10,15 @@ body{
 article>header{
     margin-bottom: 1rem;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+article>header button{
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+    margin: 0;
 }
 article>footer{
     margin-top: 1rem;
@@ -18,4 +27,26 @@ article>footer{
 }
 article>footer ul{
     margin-bottom: 0;
+}
+.country-list__flag{
+    margin-right: .5rem;
+}
+.country-list__item{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+}
+.country-list__item:nth-child(odd){
+    background-color: var(--card-sectionning-background-color);
+}
+.country-list__item button{
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+    margin: 0;
+}
+.country-list__item p{
+    flex-grow: 1;
+    margin: 0;
 }

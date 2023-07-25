@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Countries from './Countries'
 import SearchCountries from './SearchCountries'
+import Country from './Country'
 
 function App() {
 
@@ -10,10 +11,14 @@ function App() {
   // const base = 'http://localhost:3001'
 
   const [countries, setCountries] = useState([])
+  const [country, setCountry] = useState(null)
   const [search, setSearch] = useState('')
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
+  }
+  const handleGoBack = () => {
+    setCountry(null)
   }
   // fetch countries from API.
   useEffect(() => {
@@ -30,7 +35,8 @@ function App() {
   return (
     <>
       <SearchCountries search={search} handleSearch={handleSearch} />
-      <Countries countries={countries} />
+      <Countries countries={countries} country={country} setCountry={setCountry} />
+      <Country country={country} setCountry={setCountry} />
     </>
   );
 }
