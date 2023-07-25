@@ -9,13 +9,14 @@ const App = () => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [search, setSearch] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const isVisible = (name, search) => name.toLowerCase().includes(search.toLowerCase())
 
     // fetch persons from REST API
     useEffect(() => {
         axios
-            .get('http://localhost:3001/persons')
+            .get(process.env.REACT_APP_API_URL)
             .then((response) => {
                 // append visible attribute.
                 setPersons(
@@ -41,8 +42,6 @@ const App = () => {
         }
         setNewNumber(e.target.value)
     }
-
-   
 
     const handleSearch = (e) => {
         if (e.target.value === search) {
@@ -72,14 +71,28 @@ const App = () => {
             return
         }
 
-        setPersons(persons.concat({
+        const newPerson = {
             id: persons.length + 1,
             name: newName,
             number: newNumber,
             visible: isVisible(newName, search)
-        }))
-        setNewName('')
-        setNewNumber('')
+        }
+
+        setLoading(true)
+        axios
+            .post(process.env.REACT_APP_API_URL, newPerson)
+            .then(response => {
+
+                setPersons(persons.concat(response.data))
+                setNewName('')
+                setNewNumber('')
+
+            })
+            .catch(e => {
+                console.error(e);
+                alert(e)
+            })
+            .finally(() => setLoading(false))
     }
 
     return (
@@ -91,6 +104,7 @@ const App = () => {
                 handleNameChange={handleNameChange}
                 newNumber={newNumber}
                 handleNumberChange={handleNumberChange}
+                loading={loading}
             />
             <h2>Numbers</h2>
             <Filter search={search} handleSearch={handleSearch} />
